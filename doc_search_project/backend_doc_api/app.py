@@ -43,8 +43,7 @@ def api_browse(subpath=''):
         "items": items
     })
 
-@app.route('/api/search')
-# NO SEU ARQUIVO app.py, SUBSTITUA A FUNÇÃO api_search ANTIGA POR ESTA:
+
 
 @app.route('/api/search')
 def api_search():
@@ -96,7 +95,34 @@ def api_view_file(filepath):
         return jsonify({"filepath": filepath, "content": content})
     except FileNotFoundError:
         return jsonify({"error": "File not found"}), 404
+# Adicione esta nova rota ao seu arquivo app.py
 
+@app.route('/api/file/update', methods=['POST'])
+def api_update_file():
+    # Pega os dados enviados pelo frontend (esperamos um JSON)
+    data = request.get_json()
+    
+    if not data or 'filepath' not in data or 'content' not in data:
+        return jsonify({"error": "Dados inválidos. 'filepath' e 'content' são necessários."}), 400
+
+    filepath = data['filepath']
+    content = data['content']
+    
+    # Medida de segurança crucial para evitar que se escreva fora da pasta 'data'
+    abs_path = os.path.join(BASE_DIR, filepath)
+    if not os.path.normpath(abs_path).startswith(os.path.normpath(BASE_DIR)):
+        return jsonify({"error": "Acesso negado."}), 403
+
+    try:
+        # Abre o arquivo em modo de escrita ('w'), que sobrescreve o conteúdo antigo
+        with open(abs_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        
+        # IMPORTANTE: Após salvar, o índice de busca fica desatualizado.
+        # Por enquanto, vamos apenas notificar o usuário. Mais tarde podemos automatizar isso.
+        return jsonify({"success": True, "message": "Arquivo salvo com sucesso. Lembre-se de reindexar para a busca funcionar."})
+    except Exception as e:
+        return jsonify({"error": f"Não foi possível salvar o arquivo: {str(e)}"}), 500
 if __name__ == '__main__':
     # Rodando na porta 5000
     app.run(host='0.0.0.0', port=5000, debug=True)
