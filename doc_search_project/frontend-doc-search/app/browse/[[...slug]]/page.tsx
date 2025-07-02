@@ -48,7 +48,16 @@ export default function BrowsePage({ params }: { params: { slug?: string[] } }) 
     <main className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Explorador de Arquivos</h1>
 
-      <SearchForm /> {/* <-- 2. AQUI ESTAMOS USANDO O COMPONENTE */}
+      // Adicione este Link perto do SearchForm
+      <div className="flex items-center gap-4 mb-4">
+        <SearchForm />
+        <Link
+          href="/create"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 whitespace-nowrap"
+        >
+          Criar Novo Arquivo
+        </Link>
+      </div>
 
       <hr className="my-4" />
 

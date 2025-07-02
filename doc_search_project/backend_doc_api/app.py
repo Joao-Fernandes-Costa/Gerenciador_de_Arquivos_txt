@@ -123,6 +123,46 @@ def api_update_file():
         return jsonify({"success": True, "message": "Arquivo salvo com sucesso. Lembre-se de reindexar para a busca funcionar."})
     except Exception as e:
         return jsonify({"error": f"Não foi possível salvar o arquivo: {str(e)}"}), 500
+# Adicione esta nova rota ao seu arquivo app.py
+
+@app.route('/api/file/create', methods=['POST'])
+def api_create_file():
+    data = request.get_json()
+    if not data or 'filepath' not in data or 'content' not in data:
+        return jsonify({"error": "Dados inválidos. 'filepath' e 'content' são necessários."}), 400
+
+    filepath = data['filepath']
+    content = data['content']
+
+    # Garante que o nome do arquivo termina com .txt
+    if not filepath.endswith('.txt'):
+        filepath += '.txt'
+
+    # Medida de segurança
+    abs_path = os.path.join(BASE_DIR, filepath)
+    if not os.path.normpath(abs_path).startswith(os.path.normpath(BASE_DIR)):
+        return jsonify({"error": "Acesso negado."}), 403
+
+    # Verifica se o arquivo já existe para não sobrescrevê-lo por acidente
+    if os.path.exists(abs_path):
+        return jsonify({"error": "Arquivo já existe neste caminho."}), 409 # 409 Conflict
+
+    try:
+        # Pega o diretório do caminho do arquivo
+        directory = os.path.dirname(abs_path)
+        
+        # Cria as pastas necessárias no caminho, se elas não existirem
+        os.makedirs(directory, exist_ok=True)
+        
+        # Cria e escreve no novo arquivo
+        with open(abs_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+            
+        return jsonify({"success": True, "message": "Arquivo criado com sucesso."})
+    except Exception as e:
+        return jsonify({"error": f"Não foi possível criar o arquivo: {str(e)}"}), 500
+
+
 if __name__ == '__main__':
     # Rodando na porta 5000
     app.run(host='0.0.0.0', port=5000, debug=True)
