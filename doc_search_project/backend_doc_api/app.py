@@ -44,17 +44,44 @@ def api_browse(subpath=''):
     })
 
 @app.route('/api/search')
+# NO SEU ARQUIVO app.py, SUBSTITUA A FUNÇÃO api_search ANTIGA POR ESTA:
+
+@app.route('/api/search')
 def api_search():
     query = request.args.get('q', '')
-    results = []
+    final_results = []
+    
     if query:
         conn = get_db_connection()
-        search_word = re.sub(r'[^\w]', '', query).lower()
-        cursor = conn.execute("SELECT DISTINCT filepath FROM inverted_index WHERE word = ?", (search_word,))
-        results = sorted([row['filepath'] for row in cursor.fetchall()])
+        
+        # 1. Limpa e quebra a pesquisa em palavras individuais
+        #    Ex: "JONATAS DA SILVA" -> ['jonatas', 'da', 'silva']
+        search_words = [re.sub(r'[^\w]', '', word).lower() for word in query.split() if word]
+        
+        if search_words:
+            # Lista para guardar os conjuntos de arquivos encontrados para cada palavra
+            list_of_filepath_sets = []
+
+            for word in search_words:
+                cursor = conn.execute("SELECT filepath FROM inverted_index WHERE word = ?", (word,))
+                # Guarda os resultados para esta palavra em um "set" para facilitar a intersecção
+                filepaths = set(row['filepath'] for row in cursor.fetchall())
+                if not filepaths:
+                    # Se qualquer uma das palavras não for encontrada, nenhum arquivo pode conter todas elas.
+                    # Limpa a lista e para a busca.
+                    list_of_filepath_sets = []
+                    break
+                list_of_filepath_sets.append(filepaths)
+
+            if list_of_filepath_sets:
+                # 2. Encontra a intersecção: arquivos que estão em TODOS os sets de resultados
+                #    Isso garante que o arquivo contém TODAS as palavras pesquisadas.
+                intersected_results = set.intersection(*list_of_filepath_sets)
+                final_results = sorted(list(intersected_results))
+
         conn.close()
 
-    return jsonify({"query": query, "results": results})
+    return jsonify({"query": query, "results": final_results})
 
 @app.route('/api/view/<path:filepath>')
 def api_view_file(filepath):
