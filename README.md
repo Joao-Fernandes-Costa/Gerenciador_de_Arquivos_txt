@@ -59,7 +59,7 @@ O frontend é a interface visual que você acessa no navegador.
 1.  **Navegue até a pasta do frontend:**
     (Lembre-se que o projeto foi criado em uma subpasta)
     ```bash
-    cd frontend-doc-search\frontend-doc-search
+    cd frontend-doc-search
     ```
 
 2.  **Instale as dependências do Node.js:**
