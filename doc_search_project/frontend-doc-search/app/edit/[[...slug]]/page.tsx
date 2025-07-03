@@ -22,7 +22,7 @@ function EditForm() {
         const fetchContent = async () => {
             try {
                 // Usamos a nossa API de visualização para pegar o conteúdo atual
-                const response = await fetch(`http://127.0.0.1:5000/api/view/${filepath}`);
+                const response = await fetch(`http://192.168.0.104:5000/api/view/${filepath}`);
                 const data = await response.json();
                 if (data.error) {
                     throw new Error(data.error);
@@ -42,7 +42,7 @@ function EditForm() {
         setStatus('Salvando...');
         try {
             // Chama a nossa NOVA API de atualização, enviando os dados em formato JSON
-            const response = await fetch(`http://127.0.0.1:5000/api/file/update`, {
+            const response = await fetch(`http://192.168.0.104:5000/api/file/update`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
