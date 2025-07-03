@@ -6,28 +6,17 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 // --- Dados que vamos usar nos formulários ---
-
-const tecnicos = [
-    "TECNICO 1",
-    "TECNICO 2",
-    "TECNICO 3",
-    "OUTRO"
-];
-
-const conferentes = [
-    "JOAO VITOR",
-    "THALLES",
-    "LUIZ FELIPE"
-];
+const tecnicos = ["DANILO", "DIOGO", "GABRIEL.T", "GABRIEL.M","GUSTAVO.B","GUSTAVO.H","GILBERTO","FABIANO","FRANCISCO.A","FELIPE","LUCAS.C","LUCAS.L","MATHEUS.H","MAURICIO","MICHAEL","MILLER","RAFAEL.J","RAFAEL.R","RODRIGO","RICKSON","VINICIUS","WARLEY"];
+const conferentes = ["JOAO VITOR", "THALLES"];
 
 // --- Template da nota ATUALIZADO ---
-// Adicionamos um título fixo e um placeholder para o relato do serviço.
+// Adicionamos um placeholder para o TIPO da nota.
 const notaTemplate = `
 -------------------------------------------
    RELATÓRIO DE SERVIÇO TÉCNICO
 -------------------------------------------
 
-TRANSFERENCIA DE EQUIPAMENTOS
+TIPO DA NOTA: {{TIPO_NOTA}}
 DATA: {{DATA}}
 
 TECNICO: {{TECNICO}}
@@ -45,9 +34,9 @@ export default function CreateSmartNotePage() {
     const router = useRouter();
 
     // --- Estados para cada campo do formulário ---
+    const [tipoNota, setTipoNota] = useState('Equipamentos'); // NOVO ESTADO para o tipo da nota
     const [data, setData] = useState(new Date().toISOString().split('T')[0]);
     const [tecnico, setTecnico] = useState(tecnicos[0]);
-    // NOVO ESTADO para o campo de relato
     const [relato, setRelato] = useState('');
     const [conferente, setConferente] = useState(conferentes[0]);
     const [status, setStatus] = useState('');
@@ -58,17 +47,25 @@ export default function CreateSmartNotePage() {
             return;
         }
 
-        const nomeArquivo = `NOTA ${tecnico} ${data}.txt`.replace(/\//g, '-');
-        const caminhoArquivo = `Notas Criadas/${nomeArquivo}`;
+        let nomeArquivo;
+        if (tipoNota === 'Ferramental') {
+            // Se for ferramental, adiciona a palavra "FERRAMENTAL" no nome
+            nomeArquivo = `NOTA ${tecnico} EQUIP ${data}.txt`.replace(/\//g, '-');
+        } else {
+            // Senão, mantém o formato original para equipamentos
+            nomeArquivo = `NOTA ${tecnico} ${data}.txt`.replace(/\//g, '-');
+        }
+        const caminhoArquivo = `${tecnico}/${nomeArquivo}`;
 
         setStatus('Criando nota...');
 
-        // Montar o conteúdo final da nota com os novos campos
-        const [ano, mes, dia] = data.split('-'); // Pega "2025-07-02" e quebra em [ "2025", "07", "02" ]
-        const dataFormatada = `${dia}/${mes}/${ano}`; // Monta a string no formato "02/07/2025"
+        const [ano, mes, dia] = data.split('-');
+        const dataFormatada = `${dia}/${mes}/${ano}`;
 
+        // Lógica de montagem do conteúdo ATUALIZADA
         let conteudoFinal = notaTemplate
-            .replace('{{DATA}}', dataFormatada) // Usa a data já formatada corretamente
+            .replace('{{TIPO_NOTA}}', tipoNota) // Adiciona o tipo da nota
+            .replace('{{DATA}}', dataFormatada)
             .replace('{{TECNICO}}', tecnico)
             .replace('{{RELATO}}', relato || 'Nenhum relato fornecido.')
             .replace('{{CONFERENTE}}', conferente);
@@ -97,9 +94,37 @@ export default function CreateSmartNotePage() {
             <p className="mb-4"><Link href="/browse" className="text-blue-500 hover:underline">&laquo; Voltar ao explorador</Link></p>
 
             <div className="space-y-4 max-w-lg">
-                {/* 1. TEXTO FIXO ADICIONADO AQUI */}
                 <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded text-center">
                     <h2 className="font-bold">RELATÓRIO DE SERVIÇO TÉCNICO</h2>
+                </div>
+
+                {/* 1. NOVO CAMPO DE SELEÇÃO ADICIONADO AQUI */}
+                <div>
+                    <label className="block text-sm font-medium mb-2">Tipo de Nota</label>
+                    <div className="flex gap-4">
+                        <label className="flex items-center">
+                            <input
+                                type="radio"
+                                name="tipoNota"
+                                value="Equipamentos"
+                                checked={tipoNota === 'Equipamentos'}
+                                onChange={(e) => setTipoNota(e.target.value)}
+                                className="h-4 w-4"
+                            />
+                            <span className="ml-2">Equipamentos</span>
+                        </label>
+                        <label className="flex items-center">
+                            <input
+                                type="radio"
+                                name="tipoNota"
+                                value="Ferramental"
+                                checked={tipoNota === 'Ferramental'}
+                                onChange={(e) => setTipoNota(e.target.value)}
+                                className="h-4 w-4"
+                            />
+                            <span className="ml-2">Ferramental</span>
+                        </label>
+                    </div>
                 </div>
 
                 <div>
@@ -113,61 +138,30 @@ export default function CreateSmartNotePage() {
                     />
                 </div>
 
+                {/* O resto do formulário continua igual... */}
                 <div>
                     <label htmlFor="tecnico" className="block text-sm font-medium mb-1">Técnico</label>
-                    <select
-                        id="tecnico"
-                        value={tecnico}
-                        onChange={(e) => setTecnico(e.target.value)}
-                        className="w-full p-2 border rounded bg-gray-100 dark:bg-gray-800"
-                    >
+                    <select id="tecnico" value={tecnico} onChange={(e) => setTecnico(e.target.value)} className="w-full p-2 border rounded bg-gray-100 dark:bg-gray-800">
                         {tecnicos.map(t => <option key={t} value={t}>{t}</option>)}
                     </select>
                 </div>
-
-                {/* 2. NOVO CAMPO DE RELATO ADICIONADO AQUI */}
                 <div>
-                    <label htmlFor="relato" className="block text-sm font-medium mb-1">Relato do Serviço / Equipamentos</label>
-                    <textarea
-                        id="relato"
-                        value={relato}
-                        onChange={(e) => setRelato(e.target.value)}
-                        rows={6}
-                        className="w-full p-2 border rounded bg-gray-100 dark:bg-gray-800 font-mono text-sm"
-                        placeholder="Descreva o serviço, equipamentos transferidos, etc."
-                    />
+                    <label htmlFor="relato" className="block text-sm font-medium mb-1">Relato do Serviço / Itens</label>
+                    <textarea id="relato" value={relato} onChange={(e) => setRelato(e.target.value)} rows={6} className="w-full p-2 border rounded bg-gray-100 dark:bg-gray-800 font-mono text-sm" placeholder="Descreva os equipamentos ou ferramentas..." />
                 </div>
-
                 <div>
                     <label htmlFor="conferente" className="block text-sm font-medium mb-1">Conferido Por</label>
-                    <select
-                        id="conferente"
-                        value={conferente}
-                        onChange={(e) => setConferente(e.target.value)}
-                        className="w-full p-2 border rounded bg-gray-100 dark:bg-gray-800"
-                    >
+                    <select id="conferente" value={conferente} onChange={(e) => setConferente(e.target.value)} className="w-full p-2 border rounded bg-gray-100 dark:bg-gray-800">
                         {conferentes.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                 </div>
-
-                {/* 3. CAMPO "RETIRADO POR" DESABILITADO */}
                 <div>
                     <label htmlFor="retiradoPor" className="block text-sm font-medium mb-1">Retirado Por</label>
-                    <input
-                        id="retiradoPor"
-                        type="text"
-                        disabled
-                        placeholder="Campo para assinatura manual no papel"
-                        className="w-full p-2 border rounded bg-gray-200 dark:bg-gray-700 cursor-not-allowed"
-                    />
+                    <input id="retiradoPor" type="text" disabled placeholder="Campo para assinatura manual no papel" className="w-full p-2 border rounded bg-gray-200 dark:bg-gray-700 cursor-not-allowed" />
                 </div>
 
-
                 <div className="flex items-center gap-4 pt-4">
-                    <button
-                        onClick={handleCreate}
-                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 text-lg"
-                    >
+                    <button onClick={handleCreate} className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 text-lg">
                         Gerar e Salvar Nota
                     </button>
                     <p className="text-sm">{status}</p>
