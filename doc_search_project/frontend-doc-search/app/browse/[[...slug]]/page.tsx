@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import SearchForm from '@/app/components/SearchForm'; // <-- 1. AQUI ESTÁ A IMPORTAÇÃO
 
 // Definindo os tipos dos dados que esperamos da API
@@ -16,11 +17,12 @@ interface ApiResponse {
   items: FileItem[];
 }
 
-export default function BrowsePage({ params }: { params: { slug?: string[] } }) {
+export default function BrowsePage() {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const params = useParams();
 
-  const currentPath = params.slug?.join('/') || '';
+  const currentPath = Array.isArray(params.slug) ? params.slug.join('/') : '';
 
   useEffect(() => {
     const fetchData = async () => {

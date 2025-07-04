@@ -42,10 +42,12 @@ export default function CreateSmartNotePage() {
     const [status, setStatus] = useState('');
 
     const handleCreate = async () => {
+        
         if (!tecnico || !data) {
             setStatus('Data e Técnico são campos obrigatórios.');
             return;
         }
+         console.log("Tentando chamar a API em:", process.env.NEXT_PUBLIC_API_URL);
 
         let nomeArquivo;
         if (tipoNota === 'Ferramental') {
@@ -71,7 +73,7 @@ export default function CreateSmartNotePage() {
             .replace('{{CONFERENTE}}', conferente);
 
         try {
-            const response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/file/create', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/file/create`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ filepath: caminhoArquivo, content: conteudoFinal }),
