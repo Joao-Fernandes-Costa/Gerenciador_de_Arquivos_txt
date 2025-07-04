@@ -29,7 +29,7 @@ function SearchResults() {
       setIsLoading(true);
       try {
         // Chama a API do backend para obter os resultados da busca
-        const response = await fetch(`http://192.168.0.104:5000/api/search?q=${encodeURIComponent(query)}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/search?q=${encodeURIComponent(query)}`);
         const data: SearchResponse = await response.json();
         setResults(data.results);
       } catch (error) {
@@ -56,7 +56,7 @@ function SearchResults() {
             <li key={filepath}>
               {/* O link aponta para a rota da API que visualiza o conteúdo */}
               <a
-                href={`http://192.168.0.104:5000/api/view/${filepath}`}
+                href={`${process.env.NEXT_PUBLIC_API_URL}/api/view/${filepath}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-500 hover:underline"

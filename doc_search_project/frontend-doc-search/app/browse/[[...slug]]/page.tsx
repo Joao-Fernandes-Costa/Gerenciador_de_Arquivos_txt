@@ -25,7 +25,7 @@ export default function BrowsePage({ params }: { params: { slug?: string[] } }) 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://192.168.0.104:5000/api/browse/${currentPath}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/browse/${currentPath}`);
         if (!response.ok) {
           throw new Error('Falha ao buscar dados da API');
         }
@@ -74,7 +74,7 @@ export default function BrowsePage({ params }: { params: { slug?: string[] } }) 
         {data.items.map((item) => (
           <li key={item.name} className={item.is_dir ? 'font-bold' : ''}>
             <Link
-              href={item.is_dir ? `/browse/${data.path ? `${data.path}/` : ''}${item.name}` : `http://192.168.0.104:5000/api/view/${data.path ? `${data.path}/` : ''}${item.name}`}
+              href={item.is_dir ? `/browse/${data.path ? `${data.path}/` : ''}${item.name}` : `${process.env.NEXT_PUBLIC_API_URL}/api/view/${data.path ? `${data.path}/` : ''}${item.name}`}
               target={item.is_dir ? '_self' : '_blank'}
               rel="noopener noreferrer"
               className="text-blue-500 hover:underline"

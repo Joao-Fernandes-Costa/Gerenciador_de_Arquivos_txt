@@ -71,7 +71,7 @@ export default function CreateSmartNotePage() {
             .replace('{{CONFERENTE}}', conferente);
 
         try {
-            const response = await fetch('http://192.168.0.104:5000/api/file/create', {
+            const response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/file/create', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ filepath: caminhoArquivo, content: conteudoFinal }),
