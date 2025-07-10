@@ -1,0 +1,18 @@
+
+-------------------------------------------
+   RELATÓRIO DE SERVIÇO TÉCNICO
+-------------------------------------------
+
+TRANSFERENCIA DE : Equipamentos
+DATA: 10/07/2025
+
+TECNICO: DANILO
+
+RELATO DO SERVIÇO:
+2 DROP 
+20 CONECTOR APC
+1 PCT MIGUELAO GRANDE
+
+-------------------------------------------
+CONFERIDO POR: JOAO VITOR
+RETIRADO POR: _________________________

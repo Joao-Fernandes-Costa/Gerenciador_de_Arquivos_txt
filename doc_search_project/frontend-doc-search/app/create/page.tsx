@@ -16,7 +16,7 @@ const notaTemplate = `
    RELATÓRIO DE SERVIÇO TÉCNICO
 -------------------------------------------
 
-TIPO DA NOTA: {{TIPO_NOTA}}
+TRANSFERENCIA DE : {{TIPO_NOTA}}
 DATA: {{DATA}}
 
 TECNICO: {{TECNICO}}

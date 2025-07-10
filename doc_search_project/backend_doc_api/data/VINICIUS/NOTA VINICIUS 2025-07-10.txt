@@ -1,0 +1,29 @@
+
+-------------------------------------------
+   RELATÓRIO DE SERVIÇO TÉCNICO
+-------------------------------------------
+
+TRANSFERENCIA DE : Equipamentos
+DATA: 10/07/2025
+
+TECNICO: VINICIUS
+
+RELATO DO SERVIÇO:
+5 ONT ZYXEL AX3000 WIFI 6 
+ZYXE8CBA727D
+ZYXE8CBA70BF
+ZYXE8CBA721B
+ZYXE8CBA727C
+ZYXE8CBA7260
+
+3 ONT INTELBRAS 121 AC WIFI 5
+ITBSCFDA88C8
+ITBSCFE3723A
+ITBSCF1C8E35
+
+10 CONECTOR APC
+1 FITA ISOLANTE
+
+-------------------------------------------
+CONFERIDO POR: JOAO VITOR
+RETIRADO POR: _________________________
