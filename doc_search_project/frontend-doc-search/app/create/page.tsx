@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 // --- Dados que vamos usar nos formulários ---
-const tecnicos = ["DANILO", "DIOGO", "GABRIEL.T", "GABRIEL.M","GUSTAVO.B","GUSTAVO.H","GILBERTO","FABIANO","FRANCISCO.A","FELIPE","JEAN","LUCAS.C","LUCAS.L","MATHEUS.H","MAURICIO","MICHAEL","MILLER","RAFAEL.J","RAFAEL.R","RODRIGO","RICKSON","VINICIUS","WARLEY"];
+const tecnicos = ["DANILO", "DIOGO", "GABRIEL.T", "GABRIEL.M","GUSTAVO.B","GUSTAVO.H","GILBERTO","FABIANO","FRANCISCO.A","FELIPE","JEAN","LUCAS.C","LUCAS.L","MATHEUS.H","MAURICIO","MICHAEL","MILLER","NATANAEL","RAFAEL.J","RAFAEL.R","RODRIGO","RICKSON","VINICIUS","WARLEY"];
 const conferentes = ["JOAO VITOR", "THALLES"];
 
 // --- Template da nota ATUALIZADO ---
