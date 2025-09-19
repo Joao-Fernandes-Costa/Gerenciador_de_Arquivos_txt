@@ -6,14 +6,14 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 // --- Dados que vamos usar nos formulários ---
-const tecnicos = ["DANILO", "DIOGO", "GABRIEL.T", "GABRIEL.M","GUSTAVO.B","GUSTAVO.H","GILBERTO","FABIANO","FRANCISCO.A","FELIPE","JEAN","LUCAS.C","LUCAS.L","MATHEUS.H","MAURICIO","MICHAEL","MILLER","NATANAEL","RAFAEL.J","RAFAEL.R","RODRIGO","RICKSON","VINICIUS","WARLEY"];
+const tecnicos = ["DANILO", "DIOGO", "GABRIEL.T", "GABRIEL.M","GUSTAVO.B","GUSTAVO.H","HERBETH","GILBERTO","FABIANO","FRANCISCO.A","FELIPE","JEAN","LUCAS.C","LUCAS.L","MATHEUS.H","MAURICIO","MICHAEL","MILLER","NATANAEL","RAFAEL.J","RAFAEL.R","RODRIGO","RICKSON","VINICIUS","WARLEY"];
 const conferentes = ["JOAO VITOR", "THALLES"];
 
 // --- Template da nota ATUALIZADO ---
 // Adicionamos um placeholder para o TIPO da nota.
 const notaTemplate = `
 -------------------------------------------
-   RELATÓRIO DE SERVIÇO TÉCNICO
+    RELATÓRIO DE SERVIÇO TÉCNICO
 -------------------------------------------
 
 TRANSFERENCIA DE : {{TIPO_NOTA}}
@@ -47,7 +47,7 @@ export default function CreateSmartNotePage() {
             setStatus('Data e Técnico são campos obrigatórios.');
             return;
         }
-         console.log("Tentando chamar a API em:", process.env.NEXT_PUBLIC_API_URL);
+        console.log("Tentando chamar a API em:", process.env.NEXT_PUBLIC_API_URL);
 
         let nomeArquivo;
         if (tipoNota === 'Ferramental') {
