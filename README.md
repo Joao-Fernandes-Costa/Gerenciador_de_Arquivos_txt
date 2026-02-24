@@ -71,13 +71,9 @@ O frontend é a interface visual que você acessa no navegador.
 
 Se você quiser que outros dispositivos na mesma rede (Wi-Fi) acessem o site, você precisa fazer uma alteração crucial.
 
-1.  **Descubra o IP do seu computador** na sua rede local (ex: `192.168.0.104`).
-2.  No projeto do frontend, procure e substitua todas as ocorrências de `http://127.0.0.1:5000` por `http://SEU_IP_DE_REDE:5000`.
-3.  Os principais arquivos a serem alterados são:
-    * `app/browse/[[...slug]]/page.tsx`
-    * `app/create/page.tsx`
-    * `app/edit/[[...slug]]/page.tsx`
-    * `app/search/page.tsx`
+1.  Você deve criar um arquivo dentro de `frontend-doc-search` estando nesta pasta crie um arquivo `.env.local`
+2.  Dentro do arquivo `.env.local` coloque o seguinte comando `NEXT_PUBLIC_API_URL=Coloque o IP do seu servidor Backend` ele ira aparecer quando você iniciar o arquivo `iniciar_tudo.bat`.
+3.  Apos isso você podera prosseguir para os proximos passos.
 
 ## Como Executar a Aplicação
 
